@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+    
+        .container {
+            height: 142vh;
+            box-sizing: border-box;
+            background: url();
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .heading {
+            height: 5em;
+            width: 40em;
+            color: black;
+            border: 6px solid black;
+            position: relative;
+            top: 1em;
+            left: 32em;
+            font-size: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom-left-radius: 20px;
+            border-top-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            border-top-right-radius: 20px;
+
+        }
+
+        .date {
+            height: 5%;
+            width: 20%;
+            background-color: khaki;
+            position: relative;
+            top: 0.9em;
+            left: 35em;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 900;
+            border: 2px solid black;
+        }
+
+        .searchBox {
+            height: 3em;
+            width: 30em;
+            position: relative;
+            top: 2em;
+            left: 37em;
+        }
+
+        .input {
+            height: 100%;
+            width: 70%;
+            float: left;
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-family: cursive;
+            border-bottom-left-radius: 10px;
+            border-top-left-radius: 10px;
+            padding: 10px;
+        }
+
+        .button {
+            height: 100%;
+            width: 30%;
+            font-size: 1.5rem;
+            font-weight: 600;
+            font-family: cursive;
+            background-color: aqua;
+            border-bottom-right-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .display {
+            height: 560px;
+            width: 30em;
+            position: relative;
+            top: 3em;
+            left: 37em;
+        }
+
+        .section {
+            height: 80px;
+            width: 100%;
+        }
+
+        .sectionName {
+            height: 60px;
+            width: 40%;
+            position: relative;
+            display: flex;
+            top: 10px;
+            left: 0;
+            align-items: center;
+            justify-content: center;
+            border-right: 5px solid black;
+            font-size: 1.4rem;
+            font-weight: 600;
+            background-color: aqua;
+            float: left;
+            border-bottom-left-radius: 20px;
+        }
+
+        .sectionContent {
+            height: 60px;
+            width: 57%;
+            position: relative;
+            top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 2px solid black;
+            font-size: 1.4rem;
+            font-weight: 600;
+            background-color: chartreuse;
+            float: right;
+            border-right: 8px solid black;
+            border-bottom-left-radius: 20px;
+            text-transform: capitalize;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="heading">
+            <h1 id="countryheading">Enter a Country Name:</i></h1>
+        </div>
+
+        <div class="searchBox">
+            <input class="input" id="country" type="search" placeholder="Enter the country Name">
+            <button class="button" id="Submit">Search</button>
+        </div>
+        <div class="display">
+            <div class="section">
+                <div class="sectionName">capital</div>
+                <div id="capital" class="sectionContent countryName"></div>
+            </div>
+            <div class="section">
+                <div class="sectionName">currencies</div>
+                <div id="currencies" class="sectionContent NewCases"></div>
+            </div>
+            <div class="section">
+                <div class="sectionName">languages</div>
+                <div id="languages" class="sectionContent TotalCases"></div>
+            </div>
+            <div class="section">
+                <div class="sectionName">name</div>
+                <div id="name" class="sectionContent NewDeaths"></div>
+            </div>
+            <div class="section">
+                <div class="sectionName">population</div>
+                <div id="population" class="sectionContent TotalDeaths"></div>
+            </div>
+            <div class="section">
+                <div class="sectionName">region</div>
+                <div id="region" class="sectionContent NewRecovered"></div>
+            </div>
+            <div class="section">
+                <div class="sectionName">subregion</div>
+                <div id="subregion" class="sectionContent TotalRecovered"></div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script>
+
+        let country = document.getElementById("country");
+
+        async function data(country) {
+
+            const url = `https://country-location-api.p.rapidapi.com/location?country=${country}`;
+            const options = {
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': 'b8bcdebf54mshd645fecc0cdde87p1e29b1jsn5a7fda963ea1',
+                    'X-RapidAPI-Host': 'country-location-api.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(url, options);
+                console.log(response);
+                const result = await response.json();
+                console.log(result);
+
+                capital.innerHTML = `${result.location.capital}`
+                currencies.innerHTML = `${result.location.currencies}`
+                languages.innerHTML = `${result.location.languages}`
+                name.innerHTML = `${result.location.name}`
+                population.innerHTML = `${result.location.population}`
+                region.innerHTML = `${result.location.region}`
+                subregion.innerHTML = `${result.location.subregion}`
+
+            } catch (error) {
+                console.error(error);
+            }
+
+        }
+
+        Submit.addEventListener("click", (e) => {
+            e.preventDefault();
+            data(country.value)
+        })
+
+        // data("country");
+
+    </script>
+
+
+
+</body>
+
+</html>
